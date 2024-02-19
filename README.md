@@ -1,0 +1,13 @@
+The implementation
+- first of all I have created a button where i am choosing the mode of entries the hardcoded normal ones or the lazy one list of stops, which are less than 10
+- secondly then, based on the choice of the stops, I asm calculatying the total distnace left and the distance covered till that stop
+- I am using spacer - to introduce a empty block of space
+- inKm is a boolean value - that stores if the button(miles/km) is selected on km or miles : true - inkm or false - inMiles
+- then displaying the current stop name and then displaying the next stop distance and when it will come until the last stop as next - if it the last then saying No stop available
+- Button - for next stop : which will help in proceeding to next stop by changing the current value of the current stop, it becomes disabled when we reach the last stop
+- Total distance is displayed and total distance left is calculated
+- Linear Progress Indicator is used to tell the progress and a percetage indicator as well is used which is self made ultity using maths
+- Then checks the number of stops is >= 10 -> lazy column else normal column
+- then sends the each item in the list as well as the current stop to stopStation
+- the curerwnt stop is turned green and all other stops are red
+- a utility function distance format helps in converting the corresponding distance to km/miles depending on the value of inKm
