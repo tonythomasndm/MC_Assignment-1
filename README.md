@@ -1,13 +1,67 @@
-The implementation
-- first of all I have created a button where i am choosing the mode of entries the hardcoded normal ones or the lazy one list of stops, which are less than 10
-- secondly then, based on the choice of the stops, I asm calculatying the total distnace left and the distance covered till that stop
-- I am using spacer - to introduce a empty block of space
-- inKm is a boolean value - that stores if the button(miles/km) is selected on km or miles : true - inkm or false - inMiles
-- then displaying the current stop name and then displaying the next stop distance and when it will come until the last stop as next - if it the last then saying No stop available
-- Button - for next stop : which will help in proceeding to next stop by changing the current value of the current stop, it becomes disabled when we reach the last stop
-- Total distance is displayed and total distance left is calculated
-- Linear Progress Indicator is used to tell the progress and a percetage indicator as well is used which is self made ultity using maths
-- Then checks the number of stops is >= 10 -> lazy column else normal column
-- then sends the each item in the list as well as the current stop to stopStation
-- the curerwnt stop is turned green and all other stops are red
-- a utility function distance format helps in converting the corresponding distance to km/miles depending on the value of inKm
+# Route Planner Application
+
+This Route Planner Application helps users track their journey, including stops, distances covered, and distances remaining. Users can switch between miles and kilometers and view their progress visually through a linear progress indicator.
+
+## Features
+
+- **Mode Selection:** Choose between predefined hardcoded stops or a lazy list of stops with less than 10 items.
+- **Distance Calculation:** Automatically calculate the total distance and distance covered up to the current stop.
+- **Unit Conversion:** Toggle between kilometers and miles.
+- **Stop Navigation:** Display current stop, next stop, and distances. A "Next Stop" button allows moving to the next stop, which becomes disabled at the last stop.
+- **Progress Display:** Show total distance, distance left, and a linear progress indicator with a percentage display.
+- **Stop Highlighting:** Highlight the current stop in green and other stops in red.
+- **Column Mode:** Display stops in a normal column for less than 10 stops or a lazy column for 10 or more stops.
+
+## Implementation Details
+
+### Button Selection for Entry Mode
+
+- **Hardcoded Normal Stops:** Predefined stops.
+- **Lazy Stops:** List of stops with less than 10 items.
+
+### Distance Calculation
+
+- **Total Distance Left:** Calculated based on the choice of stops.
+- **Distance Covered:** Calculated up to the current stop.
+
+### Spacer
+
+- Used to introduce an empty block of space in the user interface.
+
+### Unit Toggle
+
+- **inKm:** Boolean value to store whether distances are shown in kilometers (`true`) or miles (`false`).
+
+### Stop Display
+
+- **Current Stop:** Name of the current stop.
+- **Next Stop Distance:** Distance to the next stop. Displays "No stop available" for the last stop.
+- **Next Stop Button:** Proceeds to the next stop, disabled at the last stop.
+
+### Distance Display
+
+- **Total Distance:** Displayed in the chosen unit (km/miles).
+- **Total Distance Left:** Calculated dynamically.
+
+### Progress Indicator
+
+- **Linear Progress Indicator:** Shows the journey progress.
+- **Percentage Indicator:** Custom utility using math to display progress percentage.
+
+### Column Display Mode
+
+- **Normal Column:** For less than 10 stops.
+- **Lazy Column:** For 10 or more stops.
+
+### Stop Highlighting
+
+- **Current Stop:** Highlighted in green.
+- **Other Stops:** Highlighted in red.
+
+### Utility Function: `distanceFormat`
+
+- Converts the distance to kilometers or miles based on the value of `inKm`.
+
+## How to Use
+1. Download or clone the GitHub Repository
+2. Open the Project in Android Studio and run the application in emulator or your smartphone
