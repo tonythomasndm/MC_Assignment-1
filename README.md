@@ -3,8 +3,6 @@
 This Route Planner Application helps users track their journey, including stops, distances covered, and distances remaining. Users can switch between miles and kilometers and view their progress visually through a linear progress indicator.
 
 ## Features
-
-- **Mode Selection:** Choose between predefined hardcoded stops or a lazy list of stops with less than 10 items.
 - **Distance Calculation:** Automatically calculate the total distance and distance covered up to the current stop.
 - **Unit Conversion:** Toggle between kilometers and miles.
 - **Stop Navigation:** Display current stop, next stop, and distances. A "Next Stop" button allows moving to the next stop, which becomes disabled at the last stop.
@@ -13,11 +11,6 @@ This Route Planner Application helps users track their journey, including stops,
 - **Column Mode:** Display stops in a normal column for less than 10 stops or a lazy column for 10 or more stops.
 
 ## Implementation Details
-
-### Button Selection for Entry Mode
-
-- **Hardcoded Normal Stops:** Predefined stops.
-- **Lazy Stops:** List of stops with less than 10 items.
 
 ### Distance Calculation
 
@@ -65,3 +58,7 @@ This Route Planner Application helps users track their journey, including stops,
 ## How to Use
 1. Download or clone the GitHub Repository
 2. Open the Project in Android Studio and run the application in emulator or your smartphone
+
+OR
+1. Locate the apk file in the repository in the following path: `app\build\outputs\apk\debug\app-debug.apk"
+2. Install the apk file in your smartphone and run the application

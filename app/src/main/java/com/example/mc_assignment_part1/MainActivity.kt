@@ -1,5 +1,6 @@
 package com.example.mc_assignment_part1
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,10 +16,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -36,10 +38,11 @@ data class Stop(
 )
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("MutableCollectionMutableState")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val lazyStops = remember {
+            val stopsList = remember {
                 mutableListOf(
                     Stop("Kashmere Gate", 0.0),
                     Stop("Lal Killa", 26.0),
@@ -55,31 +58,9 @@ class MainActivity : ComponentActivity() {
                     Stop("Harkesh Nagar Okhla", 11.0)
                 )
             }
-            val normalStops = remember {
-                mutableListOf(
-                    Stop("Kailash Nagar", 0.0),
-                    Stop("Govind Puri", 36.0),
-                    Stop("Harkesh Nagar Okhla", 11.0)
-                )
-            }
-            val selectedStopList = remember { mutableStateOf(lazyStops) }
-            Column() {
+            Column {
                 AppName()
-                Button(
-                    onClick = {
-                        // Toggle between lazy and normal stops
-                        selectedStopList.value = if (selectedStopList.value == lazyStops) {
-                            normalStops
-                        } else {
-                            lazyStops
-                        }
-                    },
-                    modifier=Modifier.padding(12.dp)
-                ) {
-                    Text(if (selectedStopList.value == lazyStops) "Show Normal Stops" else "Show Lazy Stops")
-                }
-
-                App(selectedStopList.value)
+                App(stopsList)
 
             }
         }
@@ -89,7 +70,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun App(stops: List<Stop>) {
-    val currentStopIndex = remember { mutableStateOf(0) }
+    val currentStopIndex = remember { mutableIntStateOf(0) }
     val inKm = remember { mutableStateOf(true) }
     val totalDistance = stops.sumOf { it.distance }
 
@@ -97,7 +78,8 @@ fun App(stops: List<Stop>) {
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(
             onClick = {
@@ -109,11 +91,11 @@ fun App(stops: List<Stop>) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        val name = stops[currentStopIndex.value].name
+        val name = stops[currentStopIndex.intValue].name
         Text("Current Stop: $name")
 
-        val distanceToNextStop = if (currentStopIndex.value < stops.size - 1) {
-            stops[currentStopIndex.value + 1].distance
+        val distanceToNextStop = if (currentStopIndex.intValue < stops.size - 1) {
+            stops[currentStopIndex.intValue + 1].distance
         } else {
             0.0
         }
@@ -126,11 +108,11 @@ fun App(stops: List<Stop>) {
 
         Button(
             onClick = {
-                if (currentStopIndex.value < stops.size - 1) {
-                    currentStopIndex.value++
+                if (currentStopIndex.intValue < stops.size - 1) {
+                    currentStopIndex.intValue++
                 }
             },
-            enabled = currentStopIndex.value < stops.size - 1
+            enabled = currentStopIndex.intValue < stops.size - 1
         ) {
             Text("Next Stop")
         }
@@ -143,7 +125,7 @@ fun App(stops: List<Stop>) {
 
         Text("Total Distance Left: ${
             distanceText(
-                totalDistance - stops.take(currentStopIndex.value + 1)
+                totalDistance - stops.take(currentStopIndex.intValue + 1)
                     .sumOf { it.distance },
                 inKm.value
             )
@@ -152,15 +134,17 @@ fun App(stops: List<Stop>) {
         Spacer(modifier = Modifier.height(12.dp))
 
         LinearProgressIndicator(
-            progress = if (totalDistance != 0.0) {
-                (stops.take(currentStopIndex.value + 1).sumOf { it.distance } / totalDistance).toFloat()
-            } else {
-                0f
+            progress = {
+                if (totalDistance != 0.0) {
+                    (stops.take(currentStopIndex.intValue + 1).sumOf { it.distance } / totalDistance).toFloat()
+                } else {
+                    0f
+                }
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
         val progressPercentage = if (totalDistance != 0.0) {
-            ((stops.take(currentStopIndex.value + 1).sumByDouble { it.distance } / totalDistance) * 100).toInt()
+            ((stops.take(currentStopIndex.intValue + 1).sumOf { it.distance } / totalDistance) * 100).toInt()
         } else {
             0
         }
@@ -178,7 +162,7 @@ fun App(stops: List<Stop>) {
                     StopStation(
                         stop = stop,
                         inKm = inKm.value,
-                        isCurrent = stop == stops[currentStopIndex.value]
+                        isCurrent = stop == stops[currentStopIndex.intValue]
                     )
                 }
             }
@@ -188,7 +172,7 @@ fun App(stops: List<Stop>) {
                     StopStation(
                         stop = stop,
                         inKm = inKm.value,
-                        isCurrent = stop == stops[currentStopIndex.value]
+                        isCurrent = stop == stops[currentStopIndex.intValue]
                     )
                 }
             }
@@ -200,7 +184,7 @@ fun App(stops: List<Stop>) {
 
 @Composable
 fun StopStation(stop: Stop, inKm: Boolean, isCurrent: Boolean) {
-    var backgroundColor = when {
+    val backgroundColor = when {
         isCurrent -> Color(0xFF006400)
         else -> Color.Red
     }
@@ -221,6 +205,7 @@ fun StopStation(stop: Stop, inKm: Boolean, isCurrent: Boolean) {
 
 
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun distanceText(distance: Double, inKm: Boolean): String {
     return if (inKm) {
@@ -240,13 +225,13 @@ fun AppName(){
         .padding(15.dp),
         contentAlignment = Alignment.Center){
         Column {
-            Text(text="StopCalculator", modifier = Modifier.padding(16.dp),
+            Text(text="Routes Planner", modifier = Modifier.padding(16.dp),
                 style = TextStyle(
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )
             )
-            Divider(color = Color.Gray, thickness = 4.dp)
+            HorizontalDivider(thickness = 4.dp, color = Color.Gray)
         }
     }
 }
